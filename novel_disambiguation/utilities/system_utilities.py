@@ -84,7 +84,7 @@ def initialize_arg_parser():
                         help='specify the directory in which to find the text '
                              'files for processing. NOTE: The path to this '
                              'directory must be relative to '
-                             '$OPENCCG_HOME/ccgbank By default, all files '
+                             '"$OPENCCG_HOME/ccgbank". By default, all files '
                              'found in this working directory will be used. To '
                              'target more specific files, use one of the '
                              'optional arguments.')

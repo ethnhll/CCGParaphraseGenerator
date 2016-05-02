@@ -35,7 +35,7 @@ class TestSentence(unittest.TestCase):
         xml_lf = ElementTree.parse(logical_form)
         # Parse root elements have 'item' as a tag
         test_element = xml_lf.find('item')
-        self.test_top_parse = Parse(test_element)
+        self.test_top_parse = Parse(logical_form, test_element)
 
     def test_constructor_valid_no_second_parse(self):
 

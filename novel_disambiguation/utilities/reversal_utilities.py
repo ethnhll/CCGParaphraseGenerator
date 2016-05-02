@@ -183,9 +183,10 @@ def prepare_reversals(sentences, parse_output_directory):
 def validate_reversals(sentences, parse_output_directory):
     __logger.debug('Validating reversals for sentences %s using directory %s',
                    sentences, parse_output_directory)
+    reversal_filename = '%s/reversals' % parse_output_directory
     reversal_directory_path = '%s/reversals.dir' % parse_output_directory
     reversal_lf = '%s/tb.xml' % reversal_directory_path
-    reparses = Parse.parse_factory(reversal_lf)
+    reparses = Parse.parse_factory(reversal_filename, reversal_lf)
     # Now take these parses and find parses associated with each sentence
     sentence_dict = sentence_utilities.sentence_id_parse_map(reparses)
     ambiguous = [sentence for sentence in sentences if sentence.is_ambiguous()]

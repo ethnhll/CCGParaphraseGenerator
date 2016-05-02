@@ -100,6 +100,7 @@ def further_processing(arguments, sentences):
         xml_tree = ElementTree.ElementTree(xml_root)
         xml_tree.write(xml_file_path, encoding='utf-8')
 
+
 def main(arguments):
     original_working_directory = os.getcwd()
     # Change our working directory to CCGBANK_PATH

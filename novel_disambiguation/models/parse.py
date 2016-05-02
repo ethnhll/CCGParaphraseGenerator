@@ -14,20 +14,28 @@ class Parse:
     __FULL_WORDS = 'full-words'
     __PRED_INFO = 'pred-info'
 
-    def __init__(self, xml_lf):
+    def __init__(self, parent_filename, xml_lf):
         self.xml_lf = xml_lf
+        self.filename = str(parent_filename.encode('utf8'))
         self.full_id = self.xml_lf.attrib['info']
+        self.text = str(self.xml_lf.attrib['string'].encode('utf8'))
         self.dependency_details_map = self.__get_dependencies_from_lf(xml_lf)
         self.reversal = None
         self.rewrites = []
         self.__word_info_map = self.__get_word_info_map(xml_lf)
 
     def __str__(self):
-        rep = '<Parse: %s>' % self.full_id
+        rep = 'Parse(parent_filename: {!s}, full_id: {!s}, text: {!s})'.format(
+            self.filename,
+            self.full_id,
+            self.text)
         return rep
 
     def __repr__(self):
-        rep = '<Parse: %s>' % self.full_id
+        rep = 'Parse(parent_filename: {!s}, full_id: {!s}, text: {!s})'.format(
+            self.filename,
+            self.full_id,
+            self.text)
         return rep
 
     def __cmp__(self, other):
@@ -215,13 +223,13 @@ class Parse:
         return dependency_map
 
     @staticmethod
-    def parse_factory(logical_form_file):
+    def parse_factory(parent_filename, logical_form_file):
         parse_tree = ElementTree.parse(logical_form_file)
         lfs = parse_tree.findall('.//item')
         # Ignore items with no parse lfs
         lfs = [lf for lf in lfs if int(lf.attrib.get('numOfParses')) > 0]
         # Don't create parses for rewrite lfs
-        return [Parse(lf) for lf in lfs if '#' not in lf.attrib.get('info')]
+        return [Parse(parent_filename, lf) for lf in lfs if '#' not in lf.attrib.get('info')]
 
     def has_valid_reversal(self):
         # is_validated can return None if the reversal was not yet checked

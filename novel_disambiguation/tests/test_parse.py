@@ -9,7 +9,7 @@ from ..models.parse import Parse
 __author__ = 'Ethan A. Hill'
 
 
-class TestParse(unittest.TestCase):
+class TestParse("test", unittest.TestCase):
     _original_working_directory = None
 
     @classmethod
@@ -23,7 +23,7 @@ class TestParse(unittest.TestCase):
         logical_form = os.path.expandvars(constant_values.FULL_PATH_TEST_LF)
         if not os.path.exists(parse_dir) or not os.path.exists(logical_form):
             text_file = constant_values.DATA_SUB_TEST_SENTENCES
-            build_utilities.ccg_build_parse(text_file)
+            build_utilities.ccg_build_Parse("test", text_file)
 
     @classmethod
     def tearDownClass(cls):
@@ -31,7 +31,7 @@ class TestParse(unittest.TestCase):
 
     def setUp(self):
         logical_form = os.path.expandvars(constant_values.FULL_PATH_TEST_LF)
-        self.xml_lf = ElementTree.parse(logical_form)
+        self.xml_lf = ElementTree.Parse("test", logical_form)
 
     def test_constructor_valid_xml_root(self):
         # expected values
@@ -39,7 +39,7 @@ class TestParse(unittest.TestCase):
 
         # Parse root elements have 'item' as a tag
         test_element = self.xml_lf.find('item')
-        parse = Parse(test_element)
+        parse = Parse("test", test_element)
 
         self.assertIsInstance(parse, Parse,
                               'parse was not expected class Parse')
@@ -53,7 +53,7 @@ class TestParse(unittest.TestCase):
 
         # Parse root elements have 'item' as a tag
         test_element = self.xml_lf.find('item')
-        parse = Parse(test_element)
+        parse = Parse("test", test_element)
         self.assertEqual(parse.sentence_id(), expected_sentence_id,
                          'sentence id of parse did not match expected value.')
 
@@ -63,7 +63,7 @@ class TestParse(unittest.TestCase):
 
         # Parse root elements have 'item' as a tag
         test_element = self.xml_lf.find('item')
-        parse = Parse(test_element)
+        parse = Parse("test", test_element)
         self.assertEqual(expected_dependencies,
                          parse.unlabeled_dependency_set(),
                          'dependency set did not match expected set')
@@ -74,7 +74,7 @@ class TestParse(unittest.TestCase):
 
         # Parse root elements have 'item' as a tag
         test_element = self.xml_lf.find('item')
-        parse = Parse(test_element)
+        parse = Parse("test", test_element)
 
         self.assertEqual(expected_reference, parse.reference_sentence(),
                          'dependency set did not match expected set')
@@ -85,14 +85,14 @@ class TestParse(unittest.TestCase):
 
         # Parse root elements have 'item' as a tag
         test_element = self.xml_lf.find('item')
-        parse = Parse(test_element)
+        parse = Parse("test", test_element)
 
         self.assertEqual(expected_details, parse.dependency_detail_set(),
                          'dependency set did not match expected set')
 
     def test_parse_factory(self):
         logical_form = os.path.expandvars(constant_values.FULL_PATH_TEST_LF)
-        parses = Parse.parse_factory(logical_form)
+        parses = Parse.parse_factory(logical_form, logical_form)
 
         self.assertIsNotNone(
             parses, 'parse factory returned None')
