@@ -109,7 +109,7 @@ def is_different_enough(parse, other):
         bad_attachment = has_uninteresting_dependency_difference(parse, other)
         if not only_by_reverse and not only_by_one and not bad_attachment:
             return True
-    __logger.debug("Parse [{!s}] and [{!s}] do not have different enough dependencies")
+    __logger.debug("Parse [{!s}] and [{!s}] do not have different enough dependencies".format(parse, other))
     return False
 
 
@@ -147,5 +147,7 @@ def sentence_factory(parse_output_directory):
     for sentence_id, sent_parses in sentence_dict.iteritems():
         # Grab the top two parses (next_best may be None)
         top_parse, next_best_parse = gather_both_top_parses(sent_parses)
+        if next_best_parse is None:
+            __logger.debug("Next best parse not found for sentence: {!s}, file:{!s}".format(sentence_id, text_file_name))
         sentences.append(Sentence(text_file_name, top_parse, next_best_parse))
     return sentences
